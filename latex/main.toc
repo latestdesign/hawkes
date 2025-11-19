@@ -1,0 +1,4 @@
+\babel@toc {french}{}\relax 
+\contentsline {section}{\numberline {1}SECTION1}{2}{section.1}%
+\contentsline {section}{\numberline {2}SECTION2}{3}{section.2}%
+\contentsline {section}{\numberline {A}APPENDIX}{4}{appendix.A}%
