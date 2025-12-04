@@ -1,6 +1,6 @@
 # Fdb version 4
-["pdflatex"] 1764834703.57001 "/home/paul/ModIA/5A/INSA/Actuariat/Projet/Hawkes/latex/main.tex" "main.pdf" "main" 1764834704.52449 0
-  "/home/paul/ModIA/5A/INSA/Actuariat/Projet/Hawkes/latex/main.tex" 1764834703.86919 1928 c8037476f2f9d5b5ccfc89cda1fa09e2 ""
+["pdflatex"] 1764835631.97348 "/home/paul/ModIA/5A/INSA/Actuariat/Projet/Hawkes/latex/main.tex" "main.pdf" "main" 1764835634.24051 0
+  "/home/paul/ModIA/5A/INSA/Actuariat/Projet/Hawkes/latex/main.tex" 1764835631.74062 2049 c7f3b6b40aa7c29972d32361a201fade ""
   "/usr/local/texlive/2024/texmf-dist/fonts/enc/dvips/base/8r.enc" 1165713224 4850 80dc9bab7f31fb78a000ccfed0e27cab ""
   "/usr/local/texlive/2024/texmf-dist/fonts/map/fontname/texfonts.map" 1577235249 3524 cb3e574dea2d1052e39280babc910dc8 ""
   "/usr/local/texlive/2024/texmf-dist/fonts/tfm/adobe/times/ptmb8r.tfm" 1136768653 4524 6bce29db5bc272ba5f332261583fee9c ""
@@ -180,10 +180,10 @@
   "/usr/local/texlive/2024/texmf-var/fonts/map/pdftex/updmap/pdftex.map" 1730714499 5475505 9858817de6e728d163c121232b884c29 ""
   "/usr/local/texlive/2024/texmf-var/web2c/pdftex/pdflatex.fmt" 1730714606 3341892 afe74da408de926a05de4241cac095f9 ""
   "/usr/local/texlive/2024/texmf.cnf" 1730714491.32385 455 5b996dcaa0eb4ef14a83b026bc0a008c ""
-  "main.aux" 1764834704.4332 695 9bca1f1763d34747dd4aa2350fe4c230 "pdflatex"
-  "main.out" 1764834704.4372 250 44da02253f026eb323845ec886852359 "pdflatex"
-  "main.tex" 1764834703.86919 1928 c8037476f2f9d5b5ccfc89cda1fa09e2 ""
-  "main.toc" 1764834704.4372 222 b3f9acdc69868204e90e653bfc18da66 "pdflatex"
+  "main.aux" 1764835634.10065 695 9bca1f1763d34747dd4aa2350fe4c230 "pdflatex"
+  "main.out" 1764835634.10465 250 44da02253f026eb323845ec886852359 "pdflatex"
+  "main.tex" 1764835631.74062 2049 c7f3b6b40aa7c29972d32361a201fade ""
+  "main.toc" 1764835634.10465 222 b3f9acdc69868204e90e653bfc18da66 "pdflatex"
   (generated)
   "main.aux"
   "main.log"
