@@ -49,13 +49,16 @@
 \usepackage{graphbox}
 \usepackage{subfig} %use subcaption for better compatibility
 
+% define command for bold underlined text
+\newcommand{\bfu}[1]{\textbf{\underline{#1}}}
+
 \title{TITLE}
 \author{AUTHOR}
 \date{\today}
 
 \begin{document}
-\maketitle
-\tableofcontents
+% \maketitle
+% \tableofcontents
 
 % 10 pages rapport total en anglais
 % intro D
@@ -69,22 +72,64 @@
 % algorithme thinning
 % étude numérique pour confirmer l'influence de alpha/beta (voir différents cas) P
 
-% comparaison Hawkes et Cramér Lundberg 
-% étude numérique de la proba de ruine (pour les deux) D 
+% comparaison Hawkes et Cramér Lundberg
+% étude numérique de la proba de ruine (pour les deux) D
 
 % ouverture vers modèles plus généraux et bonus en annexe
 
-\clearpage
-\section{SECTION1}
+% \clearpage
+% \section{SECTION1}
+
+\section{Background and Notations}
+\subsection{Poisson Processes}
+
+\bfu{Definition 1.} A counting process $N = (N(t))_{t \geq 0}$ is a stochastic process such that:
+\begin{itemize}
+    \item $N(0) = 0$,
+    \item $N(t)$ takes values in the set of non-negative integers,
+    \item $N(t)$ is non-decreasing and right-continuous.
+\end{itemize}
+
+\bfu{Definition 2.} A Poisson process with rate $\lambda > 0$ is a counting process $N = (N(t))_{t \geq 0}$ such that:
+\begin{itemize}
+    \item $N(0) = 0$,
+    \item The process has independent increments,
+    \item The number of events in any interval of length $t$ follows a Poisson distribution with parameter $\lambda t$.
+\end{itemize}
+
+% homogenous, non-homogenous
 
 
-\clearpage
-\section{SECTION2}
+\subsection{Conditional Poisson Processes}
+
+\bfu{Definition 3.} A conditional Poisson process is a counting process $N = (N(t))_{t \geq 0}$ such that, given a stochastic intensity function $\lambda(t)$, the process behaves like a Poisson process with rate $\lambda(t)$ at time $t$.
 
 
-\clearpage
-\appendix
-\section{APPENDIX}
+\subsection{Cramér-Lundberg Model}
+
+As an insurance company, the main goal is to accurately model the risk associated with claim occurrences and sizes. Doing so enables the company to set appropriate premiums, maintain sufficient reserves, and ensure long-term profitability, i.e.,
+a growing surplus. \medskip
+
+We formally define the surplus as follows:
+\begin{equation}
+R(t) = u + ct - S(t),
+\end{equation}
+with $u$ the initial reserve, $c$ the premium rate, and $S(t)$ the aggregate claims up to time $t$. \medskip
+
+In order to model $S(t)$, we consider the classical Cramér-Lundberg model which assumes that:
+\begin{equation}
+S(t) = \sum_{i=1}^{N(t)} X_i,
+\end{equation}
+where $N(t)$ is a Poisson process with rate $\lambda > 0$, representing the number of claims up to time $t$. The $X_i$ are i.i.d. random variables representing the claim sizes, \textbf{independent} of $N(t)$, with common distribution $F_X$. \medskip
+
+
+% \clearpage
+% \section{SECTION2}
+
+
+% \clearpage
+% \appendix
+% \section{APPENDIX}
 
 
 \end{document}
