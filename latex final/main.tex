@@ -1,0 +1,377 @@
+\documentclass{article}
+\usepackage{graphicx} % Required for inserting images
+\usepackage{algorithm}
+\usepackage{algorithmic}
+\usepackage{amsmath}
+\usepackage[french]{babel}
+\usepackage{url}
+\usepackage[utf8x]{inputenc}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{graphicx}
+\graphicspath{{images/}}
+
+\usepackage{parskip}
+\usepackage[left=0cm,right=0cm]{geometry}
+\usepackage{fancyhdr}
+\usepackage{vmargin}
+\usepackage{epsfig}
+\usepackage{amssymb}
+\usepackage{datetime}
+\usepackage{float}
+\usepackage{subcaption}
+\usepackage{placeins}
+\usepackage{amsmath}  % Ou amssymb
+\usepackage{bbold}   % Pour une indicatrice stylisée
+\usepackage{tikz}
+\usepackage{graphicx}
+\usetikzlibrary{3d,calc,positioning}
+\usepackage{import}
+\usepackage{stmaryrd}
+
+% define command for bold underlined text
+\newcommand{\bfu}[1]{\textbf{\underline{#1}}}
+
+\title{\vspace{4cm} \textbf{Hawkes  - }}
+\author{CHRAIBI Driss - LOUKA Paul - FATHI Wassim\\ }
+\date{\vspace{7cm} Deuxième année ModIA  \\
+2025-2026 }
+
+\begin{document}
+
+% \begin{figure}[t]
+% \centering
+% \includegraphics[width=8cm]{image_n7.png}
+% \end{figure}
+
+% \maketitle
+% \newpage
+
+% \tableofcontents
+
+% \newpage
+% \listoffigures
+% \newpage 
+\section{Introduction}
+
+As an insurance company, the main goal is to accurately model the risk associated with claim occurrences and sizes. Doing so enables the company to set appropriate premiums, maintain sufficient reserves, and ensure long-term profitability, i.e.,
+a growing surplus.
+
+Claim occurences can be modeled using counting or point processes, which represent the number of events occurring over time. One of the simplest point processes is the well studied homogeneous Poisson process, which assumes that events occur independently and at a constant average rate, also known as intensity. This is a reasonable model for phenomena like the arrival of calls at a call center. By allowing the intensity to vary, it is possible to extend to the inhomogeneous case, which helps model phenomena with seasonality, such as traffic during rush hour.
+
+However, both models assume the independence of counting increments. This assumption does not hold for events like earthquakes, epidemic spreads, or market crashes, where a main shock often causes a sequence of aftershocks. In insurance, claim occurrences also exhibit clustering behavior, where one claim can increase the likelihood of subsequent claims. To capture this phenomenon, we turn to the Hawkes process, which is a self-exciting model capable of capturing these effects.
+
+The aim of the study is to simulate the Hawkes process and quantify how the clustering of events affects the surplus process. Our approach relies on \textbf{Ogata’s Thinning Algorithm}, a simulation technique based on rejection sampling used to generate point processes with time-dependent intensities.
+
+% modify accordingly
+We first approach the problem theoretically by characterizing the exponential kernel and deriving the stationary mean intensity. We also establish \textbf{the net profit condition (NPC)}, ensuring that the collected premiums are sufficient to cover the expected claim load. We then compute the probability of ruin for different value of the initial capital u and the premium rate c using monte carlo approach. We also evaluate the model’s robustness, by analyzing the errors on the clustering parameters and introduce risk mitigation strategies.
+
+
+\section{Background and Notations}
+\subsection{Poisson Processes}
+
+\bfu{Definition 1} A counting process $N = (N(t))_{t \geq 0}$ is a sequence of non-negative random variables such that:
+\begin{itemize}
+    \item $N(0) = 0$,
+    \item $N(t)$ takes values in the set of non-negative integers,
+    \item $N(t)$ is non-decreasing and right-continuous.
+\end{itemize}
+
+\bfu{Definition 2} A Poisson process with rate $\lambda > 0$ is a counting process $N = (N(t))_{t \geq 0}$ such that:
+\begin{itemize}
+    \item $N(0) = 0$,
+    \item The process has independent increments,
+    \item The number of events in any interval of length $t$ follows a Poisson distribution with parameter $\lambda t$.
+\end{itemize}
+
+% homogenous, non-homogenous
+
+\subsection{Conditional Poisson Processes}
+
+\bfu{Definition 3.} A conditional Poisson process is a counting process $N = (N(t))_{t \geq 0}$ such that, given a stochastic intensity function $\lambda(t)$, the process behaves like a Poisson process with rate $\lambda(t)$ at time $t$.
+
+
+\subsection{Cramér-Lundberg Model}
+
+As an insurance company, the main goal is to accurately model the risk associated with claim occurrences and sizes. Doing so enables the company to set appropriate premiums, maintain sufficient reserves, and ensure long-term profitability, i.e.,
+a growing surplus. \medskip
+
+We formally define the surplus as follows:
+\begin{equation}
+R(t) = u + ct - S(t),
+\end{equation}
+with $u$ the initial reserve, $c$ the premium rate, and $S(t)$ the aggregate claims up to time $t$. \medskip
+
+In order to model $S(t)$, we consider the classical Cramér-Lundberg model which assumes that:
+\begin{equation}
+S(t) = \sum_{i=1}^{N(t)} X_i,
+\end{equation}
+where $N(t)$ is a Poisson process with rate $\lambda > 0$, representing the number of claims up to time $t$. The $X_i$ are i.i.d. random variables representing the claim sizes, \textbf{independent} of $N(t)$, with common distribution $F_X$. \medskip
+
+
+\newpage
+\section{Introduction du processus de Hawkes}
+
+
+\subsection{Limite du processus de Poisson}
+
+Poisson processing  
+Le processus de Poisson repose sur deux hypothèses fortes: l'indépendance des accroissements et la stationnarité de $\lambda(t)$. La probabilité d'occurrence d'un sinistre ne dépend pas de l'historique du processus (memory less property). 
+
+Or, cette modélisation échoue dès lors que le phénomène observé présente un caractère auto-excitant (lorsqu'un événement accroît temporairement le risque d'occurrence du prochain sinistre). Dans des domaines tels que la sismologie ou l'actuariat, une telle modélisation devient inadaptée car elle sous-estime le risque de contagion.
+
+\subsection{Définition du Processus de Hawkes}
+
+A.G. Hawkes (1971) a introduit un processus auto-excitants afin de modéliser des dynamiques où la contagion n'est pas négligeable.
+
+Let $H = (H(t))_{t \geq 0}$ be the counting Hawkes process representing the number of claims up to time $t$, and let $ (T_k)_{k \geq 1}$ denote the ordered arrival times.
+
+Thus its intensity function is of the form $\lambda(t)$ defined by:
+$$
+\lambda(t) = \mu + \int_0^t \phi(t - s) dN(s) = \mu + \sum_{t_k < t} \phi(t - t_k),
+$$
+
+where $\mu > 0$ is the baseline intensity and $\phi \in L^1(\mathbb{R}_+)$ is the excitation function or kernel. See Bacry et al. (2015).
+
+
+\subsection{Noyau exponentielle}
+
+In this project, we will consider an exponential kernel of the form $\phi(t) = \alpha e^{-\beta t}$ with parameters $\alpha, \beta > 0$.
+
+où $\alpha$ est le paramètre d'excitation représentant le saut d'amplitude de l'intensité provoqué par le sinistre et $\beta$ est le paramètre de décroissance représentant la vitesse à laquelle diminue l'intensité après une excitation pour retrouver son état de base. Un $\beta$ faible implique une modélisation à mémoire longue où l'impact d'un événement perdure longtemps dans le système.
+
+
+Ce choix permet de modéliser une mémoire courte : l'influence d'un sinistre est maximale ($\alpha$) à l'instant de son occurrence, puis s'estompe exponentiellement avec une vitesse $\beta$.
+
+L'intensité devient alors :$$\lambda(t) = \mu + \sum_{T_k < t} \alpha e^{-\beta(t - T_k)}$$
+
+Par ailleurs, comme établi par Hawkes et Oakes (1974) dans leur représentation par grappes (cluster representation), l'intégrale du noyau sur $[0, +\infty[$ correspond au nombre moyen d'événements générés directement par une seule excitation. On appelle cette quantité le ratio de branchement, noté $n$ (ou parfois $||\phi||_1$) :
+
+$$n = \int_0^{+\infty} \alpha e^{-\beta t} \, dt =\frac{\alpha}{\beta}
+$$
+0
+Intuitivement, pour que le système soit stable et ne diverge pas par la création d'événement en chaine, il faut qu'un événement en génère en moyenne strictement moins que 1. Nous confirmerons cette intuition de stabilité dans la section suivante lors du calcul de l'espérance du nombre de sinistres
+
+
+\newpage
+
+
+\section{Étude du Nombre Moyen de Sinistres}
+
+
+L'introduction du phénomène d'auto-excitation augmentant temporairement l'intensité $\lambda(t)$ après chaque sinistre.  Cette dépendance entre les sinitres altère le critère déterministe de l'intensité $\lambda(t)$. Nous nous proposons d'établir et d'analyser l'expression exacte de l'espérance dans la section suivante.
+
+
+\subsection{Expression de l'Espérence}
+
+We recall that the intensity function is :
+$$\lambda(t) = \mu + \sum_{T_k < t} \alpha e^{-\beta(t - T_k)}$$
+
+L'espérance du processus de comptage est donnée par la relation fondamentale : $$\mathbf{E}[H(t)] = \mathbf{E}\left[\int_0^t \lambda(x) dx\right]$$
+Après résolution par transformation de fourier (voir détail de la preuve en Annexe), nous obtenons l'expression suivante pour tout $t \ge 0$ :
+
+$$\boxed{\mathbf{E}[H(t)] = \frac{\mu}{\beta - \alpha} \left( \beta t - \frac{\alpha}{\beta - \alpha} (1 - e^{-(\beta - \alpha) t}) \right)}$$
+
+On retrouve ici la condition : $\alpha$ $<$ $\beta$ assurant la stabilité du système. Dans le cas contraire, le terme exponentiel $e^{-(\beta - \alpha) t}$ divergerait, rendant le système instable.
+
+\subsection{Analyse asymptotique}
+[text pour justifier qu'on analyse surtout en stationnaire]
+
+
+Étudions le comportement lorsque : $t \to +\infty$.
+Comme $\alpha < \beta$, le terme exponentiel s'annule : 
+$$e^{-(\beta - \alpha) t} \to 0$$
+
+L'expression se simplifie alors en deux termes : un terme linéaire en $t$ et une constante négligeable devant $t$ :
+
+$$
+\mathbf{E}[H(t)] \sim \frac{\mu \beta}{\beta - \alpha} t - \frac{\mu \alpha}{(\beta - \alpha)^2}
+$$
+
+À l’ordre 1, le terme linéaire domine, ce qui nous donne le comportement moyen à long terme :
+
+$$
+\boxed{\mathbf{E}[H(t)] \sim \frac{\mu }{1 - \frac{\alpha }{\beta}} \, t  = \mu t*\frac{1 }{1 - n} \quad \text{quand } t \to +\infty}
+$$
+
+Cette forme asymptotique de l'espérance valide la représentation par \textit{Cluster} proposée par Hawkes et Oakes (1974). Le processus de comptage est décomposé en familles d'événements indépendantes.
+
+En effet, sur un intervalle d'observation $[0, t]$, on peut distinguer deux types d'événements:
+\begin{itemize}
+    \item Immigrants (génération 0), arrivant selon un processus de Poisson d'intensité $\mu$. Leur nombre moyen est $\mu t$.
+    \item Descendants (générations $1, 2, \dots$) générés par l'auto-excitations du système.
+\end{itemize}
+
+On rappelle que $n$ correspond au nombre moyen d'événements générés par une seule exitation. Un événement de la génération k génère donc en moyenne $n$ événements de la génération k+1. On peut donc prouver par récurrence qu'il y a en moyenne $n^k$ descendants générés à la génération k par un immigrant. La taille moyenne d'une famille (cluster) est donc donnée par la somme de la série géométrique :
+\begin{equation}
+    \mathbb{E}[\text{Taille Cluster}] =\sum_{k=0}^{+\infty} \mathbb{E}[\text{Descendants générés à la génération k}]   = \sum_{k=0}^{+\infty} n^k=\frac{1}{1-n}
+\end{equation}
+
+Ainsi, l'espérance du nombre total d'événements au temps $t$ très grand s'obtient en multipliant le nombre moyen d'immigrants par la taille moyenne d'un cluster :
+\begin{equation}
+    \mathbb{E}[H_t] \approx \underbrace{\mu t}_{\text{Immigrants}} \times \underbrace{\frac{1}{1-n}}_{\text{Taille du Cluster}}
+\end{equation}
+
+\subsection{Net Profit Condition}
+La \textbf{Net Profit Condition} est la condition qui assure que le flux d'argent entrant est plus grand que le flux sortant en moyenne sur le long terme. Si cette condition n'est pas assurée, la probabilité de ruine est de 1.
+
+We recall the Cramér-Lundberg model:
+$$U(t) = u + \underbrace{c \cdot t}_{\text{Gains cumulés}} - \underbrace{\sum_{i=1}^{H_t} X_i}_{\text{Pertes cumulées}}$$
+
+Il faut que les primes encaissées sur une période $t$ couvrent en moyenne la charge totale des sinistres sur cette période, on cherche ainsi une condition telle que :
+$$ \text{Gains cumulés} > \mathbb{E}[\text{Pertes cumulées}]$$
+$$ c \cdot t > \mathbb{E}\left[\sum_{i=1}^{H_t} X_i\right] $$
+
+$$ c \cdot t > \mathbb{E}[H_t] \cdot \mathbb{E}[X] $$
+
+Pour établir une condition indépendante de la durée $t$, nous considérons le comportement asymptotique :
+
+$$ c > \lim_{t \to +\infty} \frac{\mathbb{E}[H_t]}{t} \cdot \mathbb{E}[X] $$
+
+On obtient alors :
+
+$$\boxed{c > \frac{\mu}{1-n} \cdot \mathbb{E}[X]}$$
+
+\newpage
+
+\section{Impact of the clustering effect on the risk of ruin for an insurance company}
+
+\subsection{Simulation framework: Ogata's algorithm and intensity validation}
+
+We simulated three distinct risk processes to validate the dynamics of the intensity function $\lambda(t)$:
+
+\begin{enumerate}
+    \item \textbf{Homogeneous Poisson Process (HPP):} Serves as our stationary benchmark with constant intensity $\lambda$.
+    \item \textbf{Inhomogeneous Poisson Process (IPP):} Captures deterministic seasonality (e.g., cyclic claim frequencies) but lacks self-excitation.
+    \item \textbf{Hawkes Process:} Incorporates the clustering effect where every event excites the intensity.
+\end{enumerate}
+
+
+\subsubsection*{Visual Analysis of Intensity Dynamics}
+
+Figure \ref{fig:three_paths} displays the sample paths of the surplus process $R(t)$, the intensity $\lambda(t)$, and the counting process $N(t)$ for each model.
+
+\begin{figure}[H]
+    \centering
+
+    % --- HPP ---
+    \begin{subfigure}{0.32\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{path_hpp.png}
+        \caption{HPP}
+    \end{subfigure}
+    \hfill
+    % --- IPP ---
+    \begin{subfigure}{0.32\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{path_ipp.png}
+        \caption{IPP}
+    \end{subfigure}
+    \hfill
+    % --- Hawkes ---
+    \begin{subfigure}{0.32\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{path_hawkes.png}
+        \caption{Hawkes}
+    \end{subfigure}
+
+    \caption{\textbf{Comparison of intensity dynamics.}
+    \text{Left:} Homogeneous Poisson Process — constant intensity. 
+    \text{Middle:} Inhomogeneous Poisson Process — deterministic seasonal intensity. 
+    \text{Right:} Hawkes process — self-exciting intensity with jumps after events and exponential decay, generating clustering and sharp drops in the surplus $R(t)$.}
+    \label{fig:three_paths}
+\end{figure}
+
+
+\subsubsection*{Interpretation}
+
+
+\subsection{Quantifying the cost of clustering: A comparison between Hawkes and Poisson models}
+
+\subsubsection*{Ruin Probability: Hawkes vs. Poisson}
+
+Figure \ref{fig:ruin_comparison} compares the probability of ruin under a Hawkes process and a homogeneous Poisson process, both calibrated to the same average intensity $\lambda$.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\textwidth]{ruin_hawkes_vs_poisson.png}
+    \caption{\textbf{Probability of ruin $\psi(u)$ as a function of the premium rate $c$.} 
+    Both models share the same average intensity $\lambda \approx \lambda_{eq}$ and initial capital $u$. 
+    The vertical dotted line represents the Net Profit Condition (NPC) threshold. 
+    The shaded region corresponds to the regime where the NPC is violated, leading to almost certain ruin. 
+    The Hawkes process exhibits systematically higher ruin probabilities due to the clustering effect.}
+    \label{fig:ruin_comparison}
+\end{figure}
+
+\subsubsection*{Comparison of Three Self-Exciting Regimes}
+
+Figure \ref{fig:ruin_regimes} illustrates the impact of three different self-exciting regimes on the probability of ruin, while keeping the average intensity constant at $\lambda = \lambda_{\text{target}}$.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\textwidth]{regimes.png}
+    \caption{\textbf{Probability of ruin under three self-exciting regimes.} 
+    The x-axis represents the premium rate $c$, and the y-axis shows the ruin probability $\psi(u)$. 
+    The vertical dotted line indicates the Net Profit Condition (NPC), which is identical for all regimes. 
+    The three curves correspond to low ($n^*=0.2$), medium ($n^*=0.5$), and critical ($n^*=0.9$) self-excitation regimes. 
+    Higher self-excitation leads to systematically higher ruin probabilities, even though the average intensity $\lambda$ is the same.}
+    \label{fig:ruin_regimes}
+\end{figure}
+
+\subsubsection*{Sensitivity to the Initial Capital}
+
+Figure \ref{fig:ruin_vs_u} shows the impact of the initial capital $u$ on the probability of ruin for both Hawkes and Poisson risk processes, using a fixed premium rate $c=3.5 > \text{NPC}$.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\textwidth]{Influence_of_u_on_Ruin.png}
+    \caption{\textbf{Ruin probability as a function of the initial capital $u$.} 
+    The premium rate is fixed at $c = 3.5$, ensuring a profitable regime ($c>\text{NPC}$). 
+    The Hawkes model consistently exhibits higher ruin probabilities due to claim clustering. 
+    The decay of the curves illustrates the classical Lundberg-type exponential behavior.}
+    \label{fig:ruin_vs_u}
+\end{figure}
+
+\subsection{Model risk and sensitivity analysis to parameter estimation errors}
+
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\textwidth]{images/Calibration_error.png}
+    \caption{\textbf{Impact of a 10\% calibration error on the probability of ruin.} 
+    The curves correspond to two self-exciting regimes: a stable regime ($n^*=0.65$) and a critical regime ($n^*=0.90$). 
+    The x-axis represents the estimation error applied to the self-excitation parameter $\alpha$, while the y-axis shows the resulting ruin probability $\psi(u)$. 
+    The vertical dashed line marks the exact calibration. 
+    The results highlight the high sensitivity of the critical regime to miscalibration, where even small positive errors can lead to a sharp increase in ruin probability, whereas the stable regime exhibits a more moderate response.}
+    \label{fig:Calibration_error}
+\end{figure}
+
+
+\subsection{Risk mitigation strategies: Reinsurance}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\textwidth]{reinsurance.png}
+    \caption{\textbf{Impact of excess-of-loss reinsurance under a critical Hawkes regime.}
+    The branching ratio is close to unity ($n^*=0.8$), corresponding to a highly unstable self-exciting regime.
+    The x-axis represents the retention level $M$, while the y-axis shows the probability of ruin $\psi(u)$. 
+    Claim sizes follow an exponential distribution and are truncated by the reinsurance contract.
+    As the retention level decreases, the insurer transfers more risk to the reinsurer, leading to a significant reduction in the probability of ruin.}
+    \label{fig:reinsurance_critical}
+\end{figure}
+
+
+
+\begin{thebibliography}{9}
+
+\bibitem{efficientnet}
+Mingxing Tan and Quoc V. Le (2021) EfficientNetV2: Smaller Models and Faster Training, arXiv:2104.00298
+
+\bibitem{rmsprop}{
+    Graves, A. (2014). Generating sequences with recurrent neural networks. arXiv preprint arXiv:1308.0850.
+}
+
+\end{thebibliography}
+
+
+\end{document}
