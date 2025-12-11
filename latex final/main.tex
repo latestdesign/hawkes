@@ -70,19 +70,22 @@ We first approach the problem theoretically by characterizing the exponential ke
 \section{Background and Notations}
 \subsection{Poisson Processes}
 
-\bfu{Definition 1.} A counting process $N = (N(t))_{t \geq 0}$ is a sequence of non-negative random variables such that:
-\begin{itemize}
-    \item $N(0) = 0$,
-    \item $N(t)$ takes values in the set of non-negative integers,
-    \item $N(t)$ is non-decreasing and right-continuous.
-\end{itemize}
+\bfu{Definition 1} A counting process $N = (N(t))_{t \geq 0}$ is a sequence of non-negative random variables such that $N(t)$ is non-decreasing and right-continuous.
 
-\bfu{Definition 2.} A Poisson process with rate $\lambda > 0$ is a counting process $N = (N(t))_{t \geq 0}$ such that:
+\bfu{Definition 2.1} A homogeneous Poisson process with rate $\lambda > 0$ is a counting process $N$ such that:
 \begin{itemize}
     \item $N(0) = 0$,
-    \item The process has independent increments,
-    \item The number of events in any interval of length $t$ follows a Poisson distribution with parameter $\lambda t$.
-\end{itemize}
+    \item The process has independent increments.
+    \item $\forall s, t \geq 0$, $N(t+s) - N(s) \sim \mathcal{P}(\lambda t)$.
+\end{itemize} \medskip
+
+\bfu{Definition 2.2} A non-homogeneous Poisson process with rate function $\lambda(t) : \mathbb{R}_+ \to \mathbb{R}_+^*$ is a counting process $N$ such that:
+
+\begin{itemize}
+    \item $N(0) = 0$,
+    \item The process has independent increments.
+    \item $\forall s, t \geq 0$, $N(t+s) - N(s) \sim \mathcal{P}(\int_s^{s+t} \lambda(u) du)$.
+\end{itemize} \medskip
 
 \subsection{Cramér-Lundberg Model}
 
