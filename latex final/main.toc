@@ -1,0 +1,28 @@
+\babel@toc {english}{}\relax 
+\contentsline {section}{Introduction}{3}{section*.3}%
+\contentsline {section}{\numberline {1}Mathematical Background and Notations}{4}{section.1}%
+\contentsline {subsection}{\numberline {1.1}Counting Processes and Filtration}{4}{subsection.1.1}%
+\contentsline {subsection}{\numberline {1.2}Poisson Processes}{4}{subsection.1.2}%
+\contentsline {subsection}{\numberline {1.3}Conditional Intensity Function}{4}{subsection.1.3}%
+\contentsline {subsection}{\numberline {1.4}The Cramér-Lundberg Risk Model}{4}{subsection.1.4}%
+\contentsline {section}{\numberline {2}Hawkes Process}{5}{section.2}%
+\contentsline {subsection}{\numberline {2.1}Poisson Process Limitations}{5}{subsection.2.1}%
+\contentsline {subsection}{\numberline {2.2}Definition of the Hawkes Process}{5}{subsection.2.2}%
+\contentsline {subsection}{\numberline {2.3}Exponential Kernel}{5}{subsection.2.3}%
+\contentsline {section}{\numberline {3}Analysis of the Expected Number of Claims}{6}{section.3}%
+\contentsline {subsection}{\numberline {3.1}Expression of the Expectation}{6}{subsection.3.1}%
+\contentsline {subsection}{\numberline {3.2}Asymptotic Analysis}{6}{subsection.3.2}%
+\contentsline {subsection}{\numberline {3.3}Net Profit Condition}{7}{subsection.3.3}%
+\contentsline {section}{\numberline {4}Simulation and Numerical Analysis of Clustering}{8}{section.4}%
+\contentsline {subsection}{\numberline {4.1}Ogata's Thinning Algorithm}{8}{subsection.4.1}%
+\contentsline {subsection}{\numberline {4.2}Influence of Kernel Parameters $\alpha $ and $\beta $}{8}{subsection.4.2}%
+\contentsline {subsection}{\numberline {4.3}Clustering Effect on the Distribution of Claims}{9}{subsection.4.3}%
+\contentsline {section}{\numberline {5}Impact of the Clustering Effect on the Risk of Ruin}{10}{section.5}%
+\contentsline {subsection}{\numberline {5.1}Simulation Framework}{10}{subsection.5.1}%
+\contentsline {subsection}{\numberline {5.2}Quantifying the Cost of Clustering: A Comparison Between Hawkes and Poisson Models}{11}{subsection.5.2}%
+\contentsline {subsection}{\numberline {5.3}Model Risk and Sensitivity Analysis to Parameter Estimation Errors}{13}{subsection.5.3}%
+\contentsline {subsection}{\numberline {5.4}Risk Mitigation Strategies: Stop-Loss Reinsurance}{14}{subsection.5.4}%
+\contentsline {section}{Conclusion}{16}{section*.20}%
+\contentsline {section}{Appendix}{17}{section*.22}%
+\contentsline {section}{\numberline {A}Proof of the expectation value of a Hawkes process with an exponential kernel}{17}{appendix.A}%
+\contentsline {section}{\numberline {B}Proof by Induction}{18}{appendix.B}%
